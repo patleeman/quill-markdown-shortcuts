@@ -2,6 +2,6 @@
 
 This package is a [Quill.js]() module that converts markdown on the fly to formatted rich text.
 
-[Example]()
+[Example](https://patleeman.github.io/quill-markdown-shortcuts/)
 
 # Quickstart
