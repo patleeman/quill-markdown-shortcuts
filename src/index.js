@@ -25,7 +25,7 @@
  // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  // THE SOFTWARE.
  //
-export default class MarkdownShortcuts {
+class MarkdownShortcuts {
   constructor (quill, options) {
     this.quill = quill
     this.options = options
@@ -238,3 +238,5 @@ export default class MarkdownShortcuts {
     }
   }
 }
+
+module.exports = MarkdownShortcuts
