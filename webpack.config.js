@@ -7,7 +7,9 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].js'
+        filename: '[name].js',
+        libraryTarget: 'var',
+        library: 'MarkdownShortcuts'
     },
     module: {
         loaders: [
