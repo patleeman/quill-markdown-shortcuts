@@ -6,18 +6,96 @@
    <link href="https://cdn.quilljs.com/1.3.1/quill.snow.css" rel="stylesheet">
    <style>
    body {
-     max-width: 700px;
      display: flex;
      justify-content: center;
+     align-items: center;
+   }
+   pre {
+     margin: 0;
+     padding: 0;
+   }
+   .container {
+     max-width: 700px;
+     width: 100%;
+     height: 100%;
+     align-self: center;
+   }
+   .example {
+     display: flex;
+     flex-direction: row;
+     flex-wrap: nowrap;
+   }
+   .cheat-sheet {
+     flex-grow: 1;
+     margin-left: 1rem;
+   }
+   .editor-wrapper {
+     flex-grow: 3;
+   }
+   .ql-editor {
+     height: 100%;
+   }
+   .title {
+     text-align: center;
    }
    </style>
  </head>
  <body>
    <div class="container">
-     <div id="editor"></div>
-     <script src="//cdn.quilljs.com/1.3.1/quill.js"></script>
-     <script src="https://cdn.rawgit.com/patleeman/quill-markdown-shortcuts/master/dist/markdownShortcuts.min.js"></script>
+     <h1 class="title">Quill Markdown Shortcuts</h1>
+
+     <p>
+       Type some markdown below to test.
+     </p>
+     <p>
+       <strong>How it works:</strong> This library registers a handler that listens to spaces, looks at the current line and sees if there is any markdown in the current line.  If so, it will convert it to the relevant quill format.
+     </p>
+
+     <div class="example">
+       <div class="editor-wrapper">
+         <div id="editor"></div>
+       </div>
+
+       <div class="cheat-sheet">
+         <p>
+           <strong>Supported markdown:</strong>
+         </p>
+         <pre>
+# Headers
+
+**Bold text**
+
+*Italic*
+
+***Bold italic***
+
+~~Strikethrough~~
+
+- Bullet points
+
+1. Numbered lists
+
+[] Checkboxes
+
+[]() Links
+
+> Blockquote
+
+`Inline code block`
+
+```
+Fenced Code block
+```
+        </pre>
+       </div>
+     </div>
+
+
+     <script src="https://rawgit.com/patleeman/quill-markdown-shortcuts/master/dist/markdownShortcuts.js"></script>
+     <script src="https://cdn.quilljs.com/1.3.1/quill.js"></script>
      <script>
+      Quill.register('modules/markdownShortcuts', MarkdownShortcuts.default)
+
        var quill = new Quill('#editor', {
          theme: 'snow',
          modules: {
