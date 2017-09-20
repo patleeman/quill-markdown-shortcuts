@@ -2,7 +2,7 @@
  // This is a module for the Quill.js WYSIWYG editor (https://quilljs.com/)
  // which converts text entered as markdown to rich text.
  //
- // v0.0.1
+ // v0.0.3
  //
  // Author: Patrick Lee (me@patricklee.nyc)
  //
@@ -85,90 +85,98 @@ class MarkdownShortcuts {
       },
       {
         name: 'bolditalic',
-        pattern: /(\*|_){3}(.+?)(\*|_){3}/g,
-        action: (text, selection, pattern) => {
-          // Abort if only * or _ chars
+        pattern: /(?:\*|_){3}(.+?)(?:\*|_){3}/g,
+        action: (text, selection, pattern, lineStart) => {
+          let match = pattern.exec(text)
+
+          const annotatedText = match[0]
+          const matchedText = match[1]
+          const startIndex = lineStart + match.index
+
           if (text.match(/^([*_ \n]+)$/g)) return
-          const startIndex = text.search(pattern)
-          if (startIndex !== -1) {
-            const matchedText = text.slice(startIndex + 3, text.length - 4)
-            const start = selection.index - (matchedText.length + 7)
-            setTimeout(() => {
-              this.quill.deleteText(start, matchedText.length + 6)
-              this.quill.insertText(start, matchedText, {bold: true, italic: true})
-              this.quill.format('bold', false)
-              this.quill.format('italic', false)
-            }, 0)
-          }
+
+          setTimeout(() => {
+            this.quill.deleteText(startIndex, annotatedText.length)
+            this.quill.insertText(startIndex, matchedText, {bold: true})
+            this.quill.format('bold', false)
+          }, 0)
         }
       },
       {
         name: 'bold',
-        pattern: /(\*|_){2}(.+?)(\*|_){2}/g,
-        action: (text, selection, pattern) => {
-          // Abort if only * or _ chars
+        pattern: /(?:\*|_){2}(.+?)(?:\*|_){2}/g,
+        action: (text, selection, pattern, lineStart) => {
+          let match = pattern.exec(text)
+
+          const annotatedText = match[0]
+          const matchedText = match[1]
+          const startIndex = lineStart + match.index
+
           if (text.match(/^([*_ \n]+)$/g)) return
-          const startIndex = text.search(pattern)
-          if (startIndex !== -1) {
-            const matchedText = text.slice(startIndex + 2, text.length - 3)
-            const start = selection.index - (matchedText.length + 5)
-            setTimeout(() => {
-              this.quill.deleteText(start, matchedText.length + 4)
-              this.quill.insertText(start, matchedText, {bold: true})
-              this.quill.format('bold', false)
-            }, 0)
-          }
+
+          setTimeout(() => {
+            this.quill.deleteText(startIndex, annotatedText.length)
+            this.quill.insertText(startIndex, matchedText, {bold: true})
+            this.quill.format('bold', false)
+          }, 0)
         }
       },
       {
         name: 'italic',
-        pattern: /(\*|_){1}(.+?)(\*|_){1}/g,
-        action: (text, selection, pattern) => {
-          // Abort if only * or _ chars
+        pattern: /(?:\*|_){1}(.+?)(?:\*|_){1}/g,
+        action: (text, selection, pattern, lineStart) => {
+          let match = pattern.exec(text)
+
+          const annotatedText = match[0]
+          const matchedText = match[1]
+          const startIndex = lineStart + match.index
+
           if (text.match(/^([*_ \n]+)$/g)) return
-          const startIndex = text.search(pattern)
-          if (startIndex !== -1) {
-            const matchedText = text.slice(startIndex + 1, text.length - 2)
-            const start = selection.index - (matchedText.length + 3)
-            setTimeout(() => {
-              this.quill.deleteText(start, matchedText.length + 2)
-              this.quill.insertText(start, matchedText, {italic: true})
-              this.quill.format('italic', false)
-            }, 0)
-          }
+
+          setTimeout(() => {
+            this.quill.deleteText(startIndex, annotatedText.length)
+            this.quill.insertText(startIndex, matchedText, {italic: true})
+            this.quill.format('italic', false)
+          }, 0)
         }
       },
       {
         name: 'strikethrough',
-        pattern: /(~~)(.+?)(~~)/g,
-        action: (text, selection, pattern) => {
-          const startIndex = text.search(pattern)
-          if (startIndex !== -1) {
-            const matchedText = text.slice(startIndex + 2, text.length - 3)
-            const start = selection.index - (matchedText.length + 5)
-            setTimeout(() => {
-              this.quill.deleteText(start, matchedText.length + 4)
-              this.quill.insertText(start, matchedText, {strike: true})
-              this.quill.format('strike', false)
-            }, 0)
-          }
+        pattern: /(?:~~)(.+?)(?:~~)/g,
+        action: (text, selection, pattern, lineStart) => {
+          let match = pattern.exec(text)
+
+          const annotatedText = match[0]
+          const matchedText = match[1]
+          const startIndex = lineStart + match.index
+
+          if (text.match(/^([*_ \n]+)$/g)) return
+
+          setTimeout(() => {
+            this.quill.deleteText(startIndex, annotatedText.length)
+            this.quill.insertText(startIndex, matchedText, {strike: true})
+            this.quill.format('strike', false)
+          }, 0)
         }
       },
       {
         name: 'code',
-        pattern: /(`)(.+?)(`)/g,
-        action: (text, selection, pattern) => {
-          const startIndex = text.search(pattern)
-          if (startIndex !== -1) {
-            const matchedText = text.slice(startIndex + 1, text.length - 2)
-            const start = selection.index - (matchedText.length + 3)
-            setTimeout(() => {
-              this.quill.deleteText(start, matchedText.length + 2)
-              this.quill.insertText(start, matchedText, {code: true})
-              this.quill.format('code', false)
-              this.quill.insertText(this.quill.getSelection(), ' ')
-            }, 0)
-          }
+        pattern: /(?:`)(.+?)(?:`)/g,
+        action: (text, selection, pattern, lineStart) => {
+          let match = pattern.exec(text)
+
+          const annotatedText = match[0]
+          const matchedText = match[1]
+          const startIndex = lineStart + match.index
+
+          if (text.match(/^([*_ \n]+)$/g)) return
+
+          setTimeout(() => {
+            this.quill.deleteText(startIndex, annotatedText.length)
+            this.quill.insertText(startIndex, matchedText, {code: true})
+            this.quill.format('code', false)
+            this.quill.insertText(this.quill.getSelection(), ' ')
+          }, 0)
         }
       },
       {
@@ -233,14 +241,15 @@ class MarkdownShortcuts {
 
   onSpace () {
     const selection = this.quill.getSelection()
-    if (!selection) return
-    const line = this.quill.getLine(selection.index)
-    const text = line[0].domNode.textContent
+    const [line, offset] = this.quill.getLine(selection.index)
+    const text = line.domNode.textContent
+    const lineStart = selection.index - offset
     if (typeof text !== 'undefined' && text) {
       for (let match of this.matches) {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
-          match.action(text, selection, match.pattern)
+          console.log('matched', match.name, text)
+          match.action(text, selection, match.pattern, lineStart)
           return
         }
       }
@@ -249,15 +258,16 @@ class MarkdownShortcuts {
 
   onEnter () {
     let selection = this.quill.getSelection()
-    const line = this.quill.getLine(selection.index)
-    // Pretty hacky. The closures in the matchers expect a space
-    const text = line[0].domNode.textContent + ' '
+    const [line, offset] = this.quill.getLine(selection.index)
+    const text = line.domNode.textContent + ' '
+    const lineStart = selection.index - offset
     selection.length = selection.index++
     if (typeof text !== 'undefined' && text) {
       for (let match of this.matches) {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
-          match.action(text, selection, match.pattern)
+          console.log('matched', match.name, text)
+          match.action(text, selection, match.pattern, lineStart)
           return
         }
       }
