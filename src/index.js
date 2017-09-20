@@ -257,7 +257,6 @@ class MarkdownShortcuts {
       for (let match of this.matches) {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
-          console.log('matched', match.name, text)
           match.action(text, selection, match.pattern)
           return
         }
