@@ -87,6 +87,8 @@ class MarkdownShortcuts {
         name: 'bolditalic',
         pattern: /(\*|_){3}(.+?)(\*|_){3}/g,
         action: (text, selection, pattern) => {
+          // Abort if only * or _ chars
+          if (text.match(/^([*_ \n]+)$/g)) return
           const startIndex = text.search(pattern)
           if (startIndex !== -1) {
             const matchedText = text.slice(startIndex + 3, text.length - 4)
@@ -104,6 +106,8 @@ class MarkdownShortcuts {
         name: 'bold',
         pattern: /(\*|_){2}(.+?)(\*|_){2}/g,
         action: (text, selection, pattern) => {
+          // Abort if only * or _ chars
+          if (text.match(/^([*_ \n]+)$/g)) return
           const startIndex = text.search(pattern)
           if (startIndex !== -1) {
             const matchedText = text.slice(startIndex + 2, text.length - 3)
@@ -120,6 +124,8 @@ class MarkdownShortcuts {
         name: 'italic',
         pattern: /(\*|_){1}(.+?)(\*|_){1}/g,
         action: (text, selection, pattern) => {
+          // Abort if only * or _ chars
+          if (text.match(/^([*_ \n]+)$/g)) return
           const startIndex = text.search(pattern)
           if (startIndex !== -1) {
             const matchedText = text.slice(startIndex + 1, text.length - 2)
@@ -217,6 +223,8 @@ class MarkdownShortcuts {
         if (delta.ops[i].hasOwnProperty('insert')) {
           if (delta.ops[i].insert === ' ') {
             this.onSpace()
+          } else if (delta.ops[i].insert === '\n') {
+            this.onEnter()
           }
         }
       }
@@ -231,6 +239,24 @@ class MarkdownShortcuts {
       for (let match of this.matches) {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
+          match.action(text, selection, match.pattern)
+          return
+        }
+      }
+    }
+  }
+
+  onEnter () {
+    let selection = this.quill.getSelection()
+    const line = this.quill.getLine(selection.index)
+    // Pretty hacky. The closures in the matchers expect a space
+    const text = line[0].domNode.textContent + ' '
+    selection.length = selection.index++
+    if (typeof text !== 'undefined' && text) {
+      for (let match of this.matches) {
+        const matchedText = text.match(match.pattern)
+        if (matchedText) {
+          console.log('matched', match.name, text)
           match.action(text, selection, match.pattern)
           return
         }
