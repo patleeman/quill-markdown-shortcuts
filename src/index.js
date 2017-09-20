@@ -233,6 +233,7 @@ class MarkdownShortcuts {
 
   onSpace () {
     const selection = this.quill.getSelection()
+    if (!selection) return
     const line = this.quill.getLine(selection.index)
     const text = line[0].domNode.textContent
     if (typeof text !== 'undefined' && text) {
