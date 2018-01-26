@@ -25,6 +25,10 @@
  // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  // THE SOFTWARE.
  //
+
+import HorizontalRule from './formats/hr'
+Quill.register('formats/horizontal', HorizontalRule)
+
 class MarkdownShortcuts {
   constructor (quill, options) {
     this.quill = quill
@@ -162,6 +166,20 @@ class MarkdownShortcuts {
         }
       },
       {
+        name: 'hr',
+        pattern: /^([-*]\s?){3}/g,
+        action: (text, selection) => {
+          const startIndex = selection.index - text.length;
+          setTimeout(() => {
+            this.quill.deleteText(startIndex, text.length)
+
+            // quill.insertText(startIndex, '\n', Quill.sources.USER);
+            this.quill.insertEmbed(startIndex + 1, 'hr', true, Quill.sources.USER);
+            this.quill.setSelection(startIndex + 2, Quill.sources.SILENT);
+          }, 0)
+        }
+      },
+      {
         name: 'asterisk-ul',
         pattern: /^(\*|\+)\s$/g,
         action: (text, selection, pattern) => {
@@ -230,8 +248,10 @@ class MarkdownShortcuts {
       for (let match of this.matches) {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
-          console.log('matched', match.name, matchedText[0])
-          match.action(matchedText[0], selection, match.pattern, lineStart)
+          // We need to replace only matched text not the whole line
+          const textToReplace = matchedText[0]
+          console.log('matched', match.name, textToReplace)
+          match.action(textToReplace, selection, match.pattern, lineStart)
           return
         }
       }

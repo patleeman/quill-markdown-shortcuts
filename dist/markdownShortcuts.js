@@ -73,11 +73,7 @@ var MarkdownShortcuts =
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-// Quill.js Plugin - Markdown Shortcuts
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // Quill.js Plugin - Markdown Shortcuts
 // This is a module for the Quill.js WYSIWYG editor (https://quilljs.com/)
 // which converts text entered as markdown to rich text.
 //
@@ -104,6 +100,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 //
+
+var _hr = __webpack_require__(1);
+
+var _hr2 = _interopRequireDefault(_hr);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+Quill.register('formats/horizontal', _hr2.default);
+
 var MarkdownShortcuts = function () {
   function MarkdownShortcuts(quill, options) {
     var _this = this;
@@ -236,6 +243,19 @@ var MarkdownShortcuts = function () {
         }, 0);
       }
     }, {
+      name: 'hr',
+      pattern: /^([-*]\s?){3}/g,
+      action: function action(text, selection) {
+        var startIndex = selection.index - text.length;
+        setTimeout(function () {
+          _this.quill.deleteText(startIndex, text.length);
+
+          // quill.insertText(startIndex, '\n', Quill.sources.USER);
+          quill.insertEmbed(startIndex + 1, 'hr', true, Quill.sources.USER);
+          quill.setSelection(startIndex + 2, Quill.sources.SILENT);
+        }, 0);
+      }
+    }, {
       name: 'asterisk-ul',
       pattern: /^(\*|\+)\s$/g,
       action: function action(text, selection, pattern) {
@@ -315,8 +335,10 @@ var MarkdownShortcuts = function () {
 
             var matchedText = text.match(match.pattern);
             if (matchedText) {
-              console.log('matched', match.name, matchedText[0]);
-              match.action(matchedText[0], selection, match.pattern, lineStart);
+              // We need to replace only matched text not the whole line
+              var textToReplace = matchedText[0];
+              console.log('matched', match.name, textToReplace);
+              match.action(textToReplace, selection, match.pattern, lineStart);
               return;
             }
           }
@@ -387,6 +409,42 @@ var MarkdownShortcuts = function () {
 }();
 
 module.exports = MarkdownShortcuts;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BlockEmbed = Quill.import('blots/block/embed');
+
+var HorizontalRule = function (_BlockEmbed) {
+  _inherits(HorizontalRule, _BlockEmbed);
+
+  function HorizontalRule() {
+    _classCallCheck(this, HorizontalRule);
+
+    return _possibleConstructorReturn(this, (HorizontalRule.__proto__ || Object.getPrototypeOf(HorizontalRule)).apply(this, arguments));
+  }
+
+  return HorizontalRule;
+}(BlockEmbed);
+
+HorizontalRule.blotName = 'hr';
+HorizontalRule.tagName = 'hr';
+
+exports.default = HorizontalRule;
 
 /***/ })
 /******/ ]);
