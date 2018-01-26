@@ -71,6 +71,8 @@ var MarkdownShortcuts =
 "use strict";
 
 
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -79,7 +81,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 // This is a module for the Quill.js WYSIWYG editor (https://quilljs.com/)
 // which converts text entered as markdown to rich text.
 //
-// v0.0.1
+// v0.0.3
 //
 // Author: Patrick Lee (me@patricklee.nyc)
 //
@@ -115,28 +117,10 @@ var MarkdownShortcuts = function () {
       name: 'header',
       pattern: /^(#){1,6}\s/g,
       action: function action(text, selection) {
-        switch (text.trim()) {
-          case '#':
-            _this.quill.formatLine(selection.index, 0, 'header', 1);
-            break;
-          case '##':
-            _this.quill.formatLine(selection.index, 0, 'header', 2);
-            break;
-          case '###':
-            _this.quill.formatLine(selection.index, 0, 'header', 3);
-            break;
-          case '####':
-            _this.quill.formatLine(selection.index, 0, 'header', 4);
-            break;
-          case '#####':
-            _this.quill.formatLine(selection.index, 0, 'header', 5);
-            break;
-          case '######':
-            _this.quill.formatLine(selection.index, 0, 'header', 6);
-            break;
-        }
+        var size = text.trim().length;
         // Need to defer this action https://github.com/quilljs/quill/issues/1134
         setTimeout(function () {
+          _this.quill.formatLine(selection.index, 0, 'header', size);
           _this.quill.deleteText(selection.index - text.length, text.length);
         }, 0);
       }
@@ -162,80 +146,94 @@ var MarkdownShortcuts = function () {
       }
     }, {
       name: 'bolditalic',
-      pattern: /(\*|_){3}(.+?)(\*|_){3}/g,
-      action: function action(text, selection, pattern) {
-        var startIndex = text.search(pattern);
-        if (startIndex !== -1) {
-          var matchedText = text.slice(startIndex + 3, text.length - 4);
-          var start = selection.index - (matchedText.length + 7);
-          setTimeout(function () {
-            _this.quill.deleteText(start, matchedText.length + 6);
-            _this.quill.insertText(start, matchedText, { bold: true, italic: true });
-            _this.quill.format('bold', false);
-            _this.quill.format('italic', false);
-          }, 0);
-        }
+      pattern: /(?:\*|_){3}(.+?)(?:\*|_){3}/g,
+      action: function action(text, selection, pattern, lineStart) {
+        var match = pattern.exec(text);
+
+        var annotatedText = match[0];
+        var matchedText = match[1];
+        var startIndex = lineStart + match.index;
+
+        if (text.match(/^([*_ \n]+)$/g)) return;
+
+        setTimeout(function () {
+          _this.quill.deleteText(startIndex, annotatedText.length);
+          _this.quill.insertText(startIndex, matchedText, { bold: true });
+          _this.quill.format('bold', false);
+        }, 0);
       }
     }, {
       name: 'bold',
-      pattern: /(\*|_){2}(.+?)(\*|_){2}/g,
-      action: function action(text, selection, pattern) {
-        var startIndex = text.search(pattern);
-        if (startIndex !== -1) {
-          var matchedText = text.slice(startIndex + 2, text.length - 3);
-          var start = selection.index - (matchedText.length + 5);
-          setTimeout(function () {
-            _this.quill.deleteText(start, matchedText.length + 4);
-            _this.quill.insertText(start, matchedText, { bold: true });
-            _this.quill.format('bold', false);
-          }, 0);
-        }
+      pattern: /(?:\*|_){2}(.+?)(?:\*|_){2}/g,
+      action: function action(text, selection, pattern, lineStart) {
+        var match = pattern.exec(text);
+
+        var annotatedText = match[0];
+        var matchedText = match[1];
+        var startIndex = lineStart + match.index;
+
+        if (text.match(/^([*_ \n]+)$/g)) return;
+
+        setTimeout(function () {
+          _this.quill.deleteText(startIndex, annotatedText.length);
+          _this.quill.insertText(startIndex, matchedText, { bold: true });
+          _this.quill.format('bold', false);
+        }, 0);
       }
     }, {
       name: 'italic',
-      pattern: /(\*|_){1}(.+?)(\*|_){1}/g,
-      action: function action(text, selection, pattern) {
-        var startIndex = text.search(pattern);
-        if (startIndex !== -1) {
-          var matchedText = text.slice(startIndex + 1, text.length - 2);
-          var start = selection.index - (matchedText.length + 3);
-          setTimeout(function () {
-            _this.quill.deleteText(start, matchedText.length + 2);
-            _this.quill.insertText(start, matchedText, { italic: true });
-            _this.quill.format('italic', false);
-          }, 0);
-        }
+      pattern: /(?:\*|_){1}(.+?)(?:\*|_){1}/g,
+      action: function action(text, selection, pattern, lineStart) {
+        var match = pattern.exec(text);
+
+        var annotatedText = match[0];
+        var matchedText = match[1];
+        var startIndex = lineStart + match.index;
+
+        if (text.match(/^([*_ \n]+)$/g)) return;
+
+        setTimeout(function () {
+          _this.quill.deleteText(startIndex, annotatedText.length);
+          _this.quill.insertText(startIndex, matchedText, { italic: true });
+          _this.quill.format('italic', false);
+        }, 0);
       }
     }, {
       name: 'strikethrough',
-      pattern: /(~~)(.+?)(~~)/g,
-      action: function action(text, selection, pattern) {
-        var startIndex = text.search(pattern);
-        if (startIndex !== -1) {
-          var matchedText = text.slice(startIndex + 2, text.length - 3);
-          var start = selection.index - (matchedText.length + 5);
-          setTimeout(function () {
-            _this.quill.deleteText(start, matchedText.length + 4);
-            _this.quill.insertText(start, matchedText, { strike: true });
-            _this.quill.format('strike', false);
-          }, 0);
-        }
+      pattern: /(?:~~)(.+?)(?:~~)/g,
+      action: function action(text, selection, pattern, lineStart) {
+        var match = pattern.exec(text);
+
+        var annotatedText = match[0];
+        var matchedText = match[1];
+        var startIndex = lineStart + match.index;
+
+        if (text.match(/^([*_ \n]+)$/g)) return;
+
+        setTimeout(function () {
+          _this.quill.deleteText(startIndex, annotatedText.length);
+          _this.quill.insertText(startIndex, matchedText, { strike: true });
+          _this.quill.format('strike', false);
+        }, 0);
       }
     }, {
       name: 'code',
-      pattern: /(`)(.+?)(`)/g,
-      action: function action(text, selection, pattern) {
-        var startIndex = text.search(pattern);
-        if (startIndex !== -1) {
-          var matchedText = text.slice(startIndex + 1, text.length - 2);
-          var start = selection.index - (matchedText.length + 3);
-          setTimeout(function () {
-            _this.quill.deleteText(start, matchedText.length + 2);
-            _this.quill.insertText(start, matchedText, { code: true });
-            _this.quill.format('code', false);
-            _this.quill.insertText(_this.quill.getSelection(), ' ');
-          }, 0);
-        }
+      pattern: /(?:`)(.+?)(?:`)/g,
+      action: function action(text, selection, pattern, lineStart) {
+        var match = pattern.exec(text);
+
+        var annotatedText = match[0];
+        var matchedText = match[1];
+        var startIndex = lineStart + match.index;
+
+        if (text.match(/^([*_ \n]+)$/g)) return;
+
+        setTimeout(function () {
+          _this.quill.deleteText(startIndex, annotatedText.length);
+          _this.quill.insertText(startIndex, matchedText, { code: true });
+          _this.quill.format('code', false);
+          _this.quill.insertText(_this.quill.getSelection(), ' ');
+        }, 0);
       }
     }, {
       name: 'asterisk-ul',
@@ -286,6 +284,8 @@ var MarkdownShortcuts = function () {
         if (delta.ops[i].hasOwnProperty('insert')) {
           if (delta.ops[i].insert === ' ') {
             _this.onSpace();
+          } else if (delta.ops[i].insert === '\n') {
+            _this.onEnter();
           }
         }
       }
@@ -296,8 +296,14 @@ var MarkdownShortcuts = function () {
     key: 'onSpace',
     value: function onSpace() {
       var selection = this.quill.getSelection();
-      var line = this.quill.getLine(selection.index);
-      var text = line[0].domNode.textContent;
+
+      var _quill$getLine = this.quill.getLine(selection.index),
+          _quill$getLine2 = _slicedToArray(_quill$getLine, 2),
+          line = _quill$getLine2[0],
+          offset = _quill$getLine2[1];
+
+      var text = line.domNode.textContent;
+      var lineStart = selection.index - offset;
       if (typeof text !== 'undefined' && text) {
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
@@ -309,7 +315,8 @@ var MarkdownShortcuts = function () {
 
             var matchedText = text.match(match.pattern);
             if (matchedText) {
-              match.action(text, selection, match.pattern);
+              console.log('matched', match.name, matchedText[0]);
+              match.action(matchedText[0], selection, match.pattern, lineStart);
               return;
             }
           }
@@ -324,6 +331,51 @@ var MarkdownShortcuts = function () {
           } finally {
             if (_didIteratorError) {
               throw _iteratorError;
+            }
+          }
+        }
+      }
+    }
+  }, {
+    key: 'onEnter',
+    value: function onEnter() {
+      var selection = this.quill.getSelection();
+
+      var _quill$getLine3 = this.quill.getLine(selection.index),
+          _quill$getLine4 = _slicedToArray(_quill$getLine3, 2),
+          line = _quill$getLine4[0],
+          offset = _quill$getLine4[1];
+
+      var text = line.domNode.textContent + ' ';
+      var lineStart = selection.index - offset;
+      selection.length = selection.index++;
+      if (typeof text !== 'undefined' && text) {
+        var _iteratorNormalCompletion2 = true;
+        var _didIteratorError2 = false;
+        var _iteratorError2 = undefined;
+
+        try {
+          for (var _iterator2 = this.matches[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+            var match = _step2.value;
+
+            var matchedText = text.match(match.pattern);
+            if (matchedText) {
+              console.log('matched', match.name, text);
+              match.action(text, selection, match.pattern, lineStart);
+              return;
+            }
+          }
+        } catch (err) {
+          _didIteratorError2 = true;
+          _iteratorError2 = err;
+        } finally {
+          try {
+            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+              _iterator2.return();
+            }
+          } finally {
+            if (_didIteratorError2) {
+              throw _iteratorError2;
             }
           }
         }

@@ -35,28 +35,10 @@ class MarkdownShortcuts {
         name: 'header',
         pattern: /^(#){1,6}\s/g,
         action: (text, selection) => {
-          switch (text.trim()) {
-            case '#':
-              this.quill.formatLine(selection.index, 0, 'header', 1)
-              break
-            case '##':
-              this.quill.formatLine(selection.index, 0, 'header', 2)
-              break
-            case '###':
-              this.quill.formatLine(selection.index, 0, 'header', 3)
-              break
-            case '####':
-              this.quill.formatLine(selection.index, 0, 'header', 4)
-              break
-            case '#####':
-              this.quill.formatLine(selection.index, 0, 'header', 5)
-              break
-            case '######':
-              this.quill.formatLine(selection.index, 0, 'header', 6)
-              break
-          }
+          const size = text.trim().length
           // Need to defer this action https://github.com/quilljs/quill/issues/1134
           setTimeout(() => {
+            this.quill.formatLine(selection.index, 0, 'header', size)
             this.quill.deleteText(selection.index - text.length, text.length)
           }, 0)
         }
@@ -248,8 +230,8 @@ class MarkdownShortcuts {
       for (let match of this.matches) {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
-          console.log('matched', match.name, text)
-          match.action(text, selection, match.pattern, lineStart)
+          console.log('matched', match.name, matchedText[0])
+          match.action(matchedText[0], selection, match.pattern, lineStart)
           return
         }
       }
