@@ -250,9 +250,9 @@ var MarkdownShortcuts = function () {
         setTimeout(function () {
           _this.quill.deleteText(startIndex, text.length);
 
-          // quill.insertText(startIndex, '\n', Quill.sources.USER);
-          quill.insertEmbed(startIndex + 1, 'hr', true, Quill.sources.USER);
-          quill.setSelection(startIndex + 2, Quill.sources.SILENT);
+          _this.quill.insertEmbed(startIndex + 1, 'hr', true, Quill.sources.USER);
+          _this.quill.insertText(startIndex + 2, "\n", Quill.sources.SILENT);
+          _this.quill.setSelection(startIndex + 2, Quill.sources.SILENT);
         }, 0);
       }
     }, {
