@@ -173,8 +173,8 @@ class MarkdownShortcuts {
           setTimeout(() => {
             this.quill.deleteText(startIndex, text.length)
 
-            // quill.insertText(startIndex, '\n', Quill.sources.USER);
             this.quill.insertEmbed(startIndex + 1, 'hr', true, Quill.sources.USER);
+            this.quill.insertText(startIndex + 2, "\n", Quill.sources.SILENT);
             this.quill.setSelection(startIndex + 2, Quill.sources.SILENT);
           }, 0)
         }
