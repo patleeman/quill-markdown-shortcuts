@@ -2,7 +2,7 @@
  // This is a module for the Quill.js WYSIWYG editor (https://quilljs.com/)
  // which converts text entered as markdown to rich text.
  //
- // v0.0.3
+ // v0.0.4
  //
  // Author: Patrick Lee (me@patricklee.nyc)
  //
