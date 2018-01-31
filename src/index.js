@@ -241,6 +241,7 @@ class MarkdownShortcuts {
 
   onSpace () {
     const selection = this.quill.getSelection()
+    if (!selection) return
     const [line, offset] = this.quill.getLine(selection.index)
     const text = line.domNode.textContent
     const lineStart = selection.index - offset
@@ -260,6 +261,7 @@ class MarkdownShortcuts {
 
   onEnter () {
     let selection = this.quill.getSelection()
+    if (!selection) return
     const [line, offset] = this.quill.getLine(selection.index)
     const text = line.domNode.textContent + ' '
     const lineStart = selection.index - offset
