@@ -2,7 +2,7 @@
  // This is a module for the Quill.js WYSIWYG editor (https://quilljs.com/)
  // which converts text entered as markdown to rich text.
  //
- // v0.0.4
+ // v0.0.5
  //
  // Author: Patrick Lee (me@patricklee.nyc)
  //
@@ -83,7 +83,7 @@ class MarkdownShortcuts {
 
           setTimeout(() => {
             this.quill.deleteText(startIndex, annotatedText.length)
-            this.quill.insertText(startIndex, matchedText, {bold: true})
+            this.quill.insertText(startIndex, matchedText, {bold: true, italic: true})
             this.quill.format('bold', false)
           }, 0)
         }
@@ -250,9 +250,8 @@ class MarkdownShortcuts {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
           // We need to replace only matched text not the whole line
-          const textToReplace = matchedText[0]
-          console.log('matched', match.name, textToReplace)
-          match.action(textToReplace, selection, match.pattern, lineStart)
+          console.log('matched', match.name, text)
+          match.action(text, selection, match.pattern, lineStart)
           return
         }
       }
