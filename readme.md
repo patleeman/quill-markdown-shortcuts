@@ -37,7 +37,10 @@ npm i -S quill-markdown-shortcuts
 
 ## Install using CDN
 
-To come
+Add the library via jsdelivr
+```
+<script src="https://cdn.jsdelivr.net/npm/quill-markdown-shortcuts@latest/dist/markdownShortcuts.js">
+```
 
 ## Install by downloading file
 
@@ -47,3 +50,4 @@ To incorporate the code into your codebase, simply download the markdownShortcut
 # Contributing
 
 Issues and pull requests are welcome. If you're interested in contributing, open an issue and start a discussion. To report bugs, open an issue. Bug fixes should be done on a fork and a pull request sent when ready.
+
