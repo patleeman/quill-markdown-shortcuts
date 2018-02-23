@@ -77,7 +77,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 // This is a module for the Quill.js WYSIWYG editor (https://quilljs.com/)
 // which converts text entered as markdown to rich text.
 //
-// v0.0.3
+// v0.0.5
 //
 // Author: Patrick Lee (me@patricklee.nyc)
 //
@@ -165,7 +165,7 @@ var MarkdownShortcuts = function () {
 
         setTimeout(function () {
           _this.quill.deleteText(startIndex, annotatedText.length);
-          _this.quill.insertText(startIndex, matchedText, { bold: true });
+          _this.quill.insertText(startIndex, matchedText, { bold: true, italic: true });
           _this.quill.format('bold', false);
         }, 0);
       }
@@ -316,6 +316,7 @@ var MarkdownShortcuts = function () {
     key: 'onSpace',
     value: function onSpace() {
       var selection = this.quill.getSelection();
+      if (!selection) return;
 
       var _quill$getLine = this.quill.getLine(selection.index),
           _quill$getLine2 = _slicedToArray(_quill$getLine, 2),
@@ -336,9 +337,8 @@ var MarkdownShortcuts = function () {
             var matchedText = text.match(match.pattern);
             if (matchedText) {
               // We need to replace only matched text not the whole line
-              var textToReplace = matchedText[0];
-              console.log('matched', match.name, textToReplace);
-              match.action(textToReplace, selection, match.pattern, lineStart);
+              console.log('matched', match.name, text);
+              match.action(text, selection, match.pattern, lineStart);
               return;
             }
           }
@@ -362,6 +362,7 @@ var MarkdownShortcuts = function () {
     key: 'onEnter',
     value: function onEnter() {
       var selection = this.quill.getSelection();
+      if (!selection) return;
 
       var _quill$getLine3 = this.quill.getLine(selection.index),
           _quill$getLine4 = _slicedToArray(_quill$getLine3, 2),
