@@ -1,6 +1,6 @@
 {
   "name": "quill-markdown-shortcuts",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Quill.js module that converts markdown to rich text formatting while typing. ",
   "main": "dist/markdownShortcuts.js",
   "scripts": {
