@@ -47,7 +47,12 @@ Add the library via jsdelivr
 To incorporate the code into your codebase, simply download the markdownShortcuts.js file and include that in your build process or link a script tag to it directly. Then set up quill and make sure to include the markdownShortcuts setting in modules.
 
 
+# Vue Quill Editor
+
+Are you using [Vue Quill Editor](https://github.com/surmon-china/vue-quill-editor)? [Aral Balkan](https://github.com/aral) is maintaining a fork of this module especially for it. [Check it out](https://github.com/aral/quill-markdown-shortcuts-for-vue-quill-editor)
+
 # Contributing
 
 Issues and pull requests are welcome. If you're interested in contributing, open an issue and start a discussion. To report bugs, open an issue. Bug fixes should be done on a fork and a pull request sent when ready.
+
 
