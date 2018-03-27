@@ -120,6 +120,7 @@ var MarkdownShortcuts = function () {
     this.quill = quill;
     this.options = options;
 
+    this.ignoreTags = ['PRE'];
     this.matches = [{
       name: 'header',
       pattern: /^(#){1,6}\s/g,
@@ -313,6 +314,11 @@ var MarkdownShortcuts = function () {
   }
 
   _createClass(MarkdownShortcuts, [{
+    key: 'isValid',
+    value: function isValid(text, tagName) {
+      return typeof text !== 'undefined' && text && this.ignoreTags.indexOf(tagName) === -1;
+    }
+  }, {
     key: 'onSpace',
     value: function onSpace() {
       var selection = this.quill.getSelection();
@@ -325,7 +331,7 @@ var MarkdownShortcuts = function () {
 
       var text = line.domNode.textContent;
       var lineStart = selection.index - offset;
-      if (typeof text !== 'undefined' && text) {
+      if (this.isValid(text, line.domNode.tagName)) {
         var _iteratorNormalCompletion = true;
         var _didIteratorError = false;
         var _iteratorError = undefined;
@@ -372,7 +378,7 @@ var MarkdownShortcuts = function () {
       var text = line.domNode.textContent + ' ';
       var lineStart = selection.index - offset;
       selection.length = selection.index++;
-      if (typeof text !== 'undefined' && text) {
+      if (this.isValid(text, line.domNode.tagName)) {
         var _iteratorNormalCompletion2 = true;
         var _didIteratorError2 = false;
         var _iteratorError2 = undefined;
