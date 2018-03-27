@@ -34,6 +34,7 @@ class MarkdownShortcuts {
     this.quill = quill
     this.options = options
 
+    this.ignoreTags = ['PRE']
     this.matches = [
       {
         name: 'header',
@@ -239,13 +240,21 @@ class MarkdownShortcuts {
     })
   }
 
+  isValid (text, tagName) {
+    return (
+      typeof text !== 'undefined' &&
+      text &&
+      this.ignoreTags.indexOf(tagName) === -1
+    )
+  }
+
   onSpace () {
     const selection = this.quill.getSelection()
     if (!selection) return
     const [line, offset] = this.quill.getLine(selection.index)
     const text = line.domNode.textContent
     const lineStart = selection.index - offset
-    if (typeof text !== 'undefined' && text) {
+    if (this.isValid(text, line.domNode.tagName)) {
       for (let match of this.matches) {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
@@ -265,7 +274,7 @@ class MarkdownShortcuts {
     const text = line.domNode.textContent + ' '
     const lineStart = selection.index - offset
     selection.length = selection.index++
-    if (typeof text !== 'undefined' && text) {
+    if (this.isValid(text, line.domNode.tagName)) {
       for (let match of this.matches) {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
