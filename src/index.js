@@ -45,7 +45,7 @@ class MarkdownShortcuts {
           const size = match[0].length
           // Need to defer this action https://github.com/quilljs/quill/issues/1134
           setTimeout(() => {
-            this.quill.formatLine(selection.index, 0, 'header', size)
+            this.quill.formatLine(selection.index, 0, 'header', size - 1)
             this.quill.deleteText(selection.index - size, size)
           }, 0)
         }

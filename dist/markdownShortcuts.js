@@ -130,7 +130,7 @@ var MarkdownShortcuts = function () {
         var size = match[0].length;
         // Need to defer this action https://github.com/quilljs/quill/issues/1134
         setTimeout(function () {
-          _this.quill.formatLine(selection.index, 0, 'header', size);
+          _this.quill.formatLine(selection.index, 0, 'header', size - 1);
           _this.quill.deleteText(selection.index - size, size);
         }, 0);
       }
