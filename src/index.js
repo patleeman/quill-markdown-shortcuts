@@ -39,12 +39,14 @@ class MarkdownShortcuts {
       {
         name: 'header',
         pattern: /^(#){1,6}\s/g,
-        action: (text, selection) => {
-          const size = text.trim().length
+        action: (text, selection, pattern) => {
+          var match = pattern.exec(text)
+          if (!match) return
+          const size = match[0].length
           // Need to defer this action https://github.com/quilljs/quill/issues/1134
           setTimeout(() => {
-            this.quill.formatLine(selection.index, 0, 'header', size)
-            this.quill.deleteText(selection.index - text.length, text.length)
+            this.quill.formatLine(selection.index, 0, 'header', size - 1)
+            this.quill.deleteText(selection.index - size, size)
           }, 0)
         }
       },
@@ -259,7 +261,7 @@ class MarkdownShortcuts {
         const matchedText = text.match(match.pattern)
         if (matchedText) {
           // We need to replace only matched text not the whole line
-          console.log('matched', match.name, text)
+          console.log('matched:', match.name, text)
           match.action(text, selection, match.pattern, lineStart)
           return
         }
