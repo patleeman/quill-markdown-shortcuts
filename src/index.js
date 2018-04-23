@@ -291,4 +291,8 @@ class MarkdownShortcuts {
   }
 }
 
+if (window.Quill) {
+  window.Quill.register('modules/markdownShortcuts', MarkdownShortcuts)
+}
+
 module.exports = MarkdownShortcuts
