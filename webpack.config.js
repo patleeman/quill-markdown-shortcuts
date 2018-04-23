@@ -11,6 +11,9 @@ module.exports = {
         libraryTarget: 'umd',
         library: 'MarkdownShortcuts'
     },
+    externals: {
+        quill: 'Quill',
+    },
     module: {
         loaders: [
             {

@@ -9,7 +9,9 @@
   },
   "author": "Patrick Lee",
   "license": "MIT",
-  "dependencies": {},
+  "peerDependencies": {
+    "quill": "^1.0.0"
+  },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
