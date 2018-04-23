@@ -26,7 +26,9 @@
  // THE SOFTWARE.
  //
 
+import Quill from 'quill'
 import HorizontalRule from './formats/hr'
+
 Quill.register('formats/horizontal', HorizontalRule)
 
 class MarkdownShortcuts {
