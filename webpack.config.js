@@ -8,7 +8,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'dist'),
         filename: '[name].js',
-        libraryTarget: 'var',
+        libraryTarget: 'umd',
         library: 'MarkdownShortcuts'
     },
     module: {
