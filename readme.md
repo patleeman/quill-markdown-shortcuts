@@ -75,4 +75,9 @@ const quill = new Quill('#editor', {
 
 # Contributing
 
-Issues and pull requests are welcome. If you're interested in contributing, open an issue and start a discussion. To report bugs, open an issue. Bug fixes should be done on a fork and a pull request sent when ready.
+Issues and pull requests are welcome! Please [open an issue](https://github.com/patleeman/quill-markdown-shortcuts/issues) for all other inquiries.
+
+## Building the module and examples
+
+To build the module and the example bundles, please run `npm run build` and include the bundles in your commit. Thanks!
+

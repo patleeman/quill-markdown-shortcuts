@@ -5,7 +5,8 @@
   "main": "dist/markdownShortcuts.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack",
+    "build": "npm run build:module && npm run build:moduleExample",
+    "build:module": "webpack",
     "build:moduleExample": "webpack --config ./docs/module/webpack.config.js "
   },
   "author": "Patrick Lee",
