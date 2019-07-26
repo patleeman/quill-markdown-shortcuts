@@ -1,3 +1,5 @@
+import Quill from 'quill';
+
 let BlockEmbed = Quill.import('blots/block/embed');
 
 class HorizontalRule extends BlockEmbed {}
