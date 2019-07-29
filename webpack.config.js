@@ -12,7 +12,7 @@ module.exports = {
         library: 'MarkdownShortcuts'
     },
     externals: {
-        quill: 'Quill',
+        quill: 'quill',
     },
     module: {
         loaders: [
