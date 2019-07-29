@@ -1,12 +1,12 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory(require("Quill"));
+		module.exports = factory(require("quill"));
 	else if(typeof define === 'function' && define.amd)
-		define(["Quill"], factory);
+		define(["quill"], factory);
 	else if(typeof exports === 'object')
-		exports["MarkdownShortcuts"] = factory(require("Quill"));
+		exports["MarkdownShortcuts"] = factory(require("quill"));
 	else
-		root["MarkdownShortcuts"] = factory(root["Quill"]);
+		root["MarkdownShortcuts"] = factory(root["quill"]);
 })(typeof self !== 'undefined' ? self : this, function(__WEBPACK_EXTERNAL_MODULE_0__) {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
