@@ -15388,7 +15388,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             }
           }, {
             name: 'asterisk-ul',
-            pattern: /^(\*|\+)\s$/g,
+            pattern: /^\+\s$/g,
             action: function action(text, selection, pattern) {
               setTimeout(function () {
                 _this.quill.formatLine(selection.index, 1, 'list', 'unordered');

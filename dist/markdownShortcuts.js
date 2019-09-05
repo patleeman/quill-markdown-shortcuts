@@ -279,7 +279,7 @@ var MarkdownShortcuts = function () {
       }
     }, {
       name: 'asterisk-ul',
-      pattern: /^(\*|\+)\s$/g,
+      pattern: /^\+\s$/g,
       action: function action(text, selection, pattern) {
         setTimeout(function () {
           _this.quill.formatLine(selection.index, 1, 'list', 'unordered');

@@ -186,7 +186,7 @@ class MarkdownShortcuts {
       },
       {
         name: 'asterisk-ul',
-        pattern: /^(\*|\+)\s$/g,
+        pattern: /^\+\s$/g,
         action: (text, selection, pattern) => {
           setTimeout(() => {
             this.quill.formatLine(selection.index, 1, 'list', 'unordered')
