@@ -15388,6 +15388,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             }
           }, {
             name: 'asterisk-ul',
+            // Quill 1.3.5 already treat * as another trigger for bullet lists
             pattern: /^\+\s$/g,
             action: function action(text, selection, pattern) {
               setTimeout(function () {
