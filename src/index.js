@@ -25,9 +25,10 @@
  // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  // THE SOFTWARE.
  //
+import Quill from 'quill';
 
-import Quill from 'quill'
-import HorizontalRule from './formats/hr'
+import HorizontalRule from './formats/hr';
+
 
 Quill.register('formats/horizontal', HorizontalRule)
 
@@ -185,8 +186,9 @@ class MarkdownShortcuts {
         }
       },
       {
-        name: 'asterisk-ul',
-        pattern: /^(\*|\+)\s$/g,
+        name: 'plus-ul',
+        // Quill 1.3.5 already treat * as another trigger for bullet lists
+        pattern: /^\+\s$/g,
         action: (text, selection, pattern) => {
           setTimeout(() => {
             this.quill.formatLine(selection.index, 1, 'list', 'unordered')
