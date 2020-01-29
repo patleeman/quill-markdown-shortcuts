@@ -115,13 +115,13 @@ class MarkdownShortcuts {
       },
       {
         name: 'italic',
-        pattern: /(?<!\S)(?:\*|_){1}(\S+?)(?:\*|_){1}(?!\S)/g,
+        pattern: /(?:\s(?:\*|_)){1}(\S+?)(?:\*|_){1}(?!\S)/g,
         action: (text, selection, pattern, lineStart) => {
           let match = pattern.exec(text)
 
-          const annotatedText = match[0]
+          const annotatedText = match[0].trim() // remove one whitespace at the start (\s)
           const matchedText = match[1]
-          const startIndex = lineStart + match.index
+          const startIndex = lineStart + match.index + 1 // add 1 to compensate for one whitespace at the start (\s)
 
           if (text.match(/^([*_ \n]+)$/g)) return
 
