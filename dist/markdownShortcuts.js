@@ -116,6 +116,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 // THE SOFTWARE.
 //
 
+
 var _quill = __webpack_require__(0);
 
 var _quill2 = _interopRequireDefault(_quill);
@@ -138,9 +139,11 @@ var MarkdownShortcuts = function () {
 
     this.quill = quill;
     this.options = options;
+    this.ignoreElements = options && options.ignore || [];
 
     this.ignoreTags = ['PRE'];
-    this.matches = [{
+
+    var elements = [{
       name: 'header',
       pattern: /^(#){1,6}\s/g,
       action: function action(text, selection, pattern) {
@@ -278,7 +281,7 @@ var MarkdownShortcuts = function () {
         }, 0);
       }
     }, {
-      name: 'asterisk-ul',
+      name: 'plus-ul',
       // Quill 1.3.5 already treat * as another trigger for bullet lists
       pattern: /^\+\s$/g,
       action: function action(text, selection, pattern) {
@@ -320,6 +323,10 @@ var MarkdownShortcuts = function () {
         }
       }
     }];
+
+    this.matches = elements.filter(function (element) {
+      return !_this.ignoreElements.includes(element.name);
+    });
 
     // Handler that looks for insert deltas that match specific characters
     this.quill.on('text-change', function (delta, oldContents, source) {
