@@ -36,9 +36,12 @@ class MarkdownShortcuts {
   constructor (quill, options) {
     this.quill = quill
     this.options = options
+    this.ignoreElements = (options && options.ignore) || []
+
 
     this.ignoreTags = ['PRE']
-    this.matches = [
+    
+    const elements = [
       {
         name: 'header',
         pattern: /^(#){1,6}\s/g,
@@ -231,6 +234,8 @@ class MarkdownShortcuts {
         }
       }
     ]
+
+    this.matches = elements.filter(element => !this.ignoreElements.includes(element.name))
 
     // Handler that looks for insert deltas that match specific characters
     this.quill.on('text-change', (delta, oldContents, source) => {
