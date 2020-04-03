@@ -116,6 +116,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 // THE SOFTWARE.
 //
 
+
 var _quill = __webpack_require__(0);
 
 var _quill2 = _interopRequireDefault(_quill);
@@ -175,7 +176,7 @@ var MarkdownShortcuts = function () {
       }
     }, {
       name: 'bolditalic',
-      pattern: /(?:\*|_){3}(.+?)(?:\*|_){3}/g,
+      pattern: /\b(?:\*|_){3}(.+?)(?:\*|_){3}\b/g,
       action: function action(text, selection, pattern, lineStart) {
         var match = pattern.exec(text);
 
@@ -193,7 +194,7 @@ var MarkdownShortcuts = function () {
       }
     }, {
       name: 'bold',
-      pattern: /(?:\*|_){2}(.+?)(?:\*|_){2}/g,
+      pattern: /\b(?:\*|_){2}(.+?)(?:\*|_){2}\b/g,
       action: function action(text, selection, pattern, lineStart) {
         var match = pattern.exec(text);
 
@@ -211,7 +212,7 @@ var MarkdownShortcuts = function () {
       }
     }, {
       name: 'italic',
-      pattern: /(?:\*|_){1}(.+?)(?:\*|_){1}/g,
+      pattern: /\b(?:\*|_){1}(.+?)(?:\*|_){1}\b/g,
       action: function action(text, selection, pattern, lineStart) {
         var match = pattern.exec(text);
 
@@ -247,7 +248,7 @@ var MarkdownShortcuts = function () {
       }
     }, {
       name: 'code',
-      pattern: /(?:`)(.+?)(?:`)/g,
+      pattern: /\b(?:`)(.+?)(?:`)\b/g,
       action: function action(text, selection, pattern, lineStart) {
         var match = pattern.exec(text);
 
@@ -278,7 +279,7 @@ var MarkdownShortcuts = function () {
         }, 0);
       }
     }, {
-      name: 'asterisk-ul',
+      name: 'plus-ul',
       // Quill 1.3.5 already treat * as another trigger for bullet lists
       pattern: /^\+\s$/g,
       action: function action(text, selection, pattern) {
