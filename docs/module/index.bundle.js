@@ -15285,12 +15285,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             }
           }, {
             name: 'bolditalic',
-            pattern: /\b(?:\*|_){3}(.+?)(?:\*|_){3}\b/g,
+            pattern: /(?:\*){3}(.+?)(?:\*){3}|\b(?:_){3}(.+?)(?:_){3}\b/g,
             action: function action(text, selection, pattern, lineStart) {
               var match = pattern.exec(text);
 
               var annotatedText = match[0];
-              var matchedText = match[1];
+              var matchedText = match[1] || match[2];
               var startIndex = lineStart + match.index;
 
               if (text.match(/^([*_ \n]+)$/g)) return;
@@ -15303,12 +15303,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             }
           }, {
             name: 'bold',
-            pattern: /\b(?:\*|_){2}(.+?)(?:\*|_){2}\b/g,
+            pattern: /(?:\*){2}(.+?)(?:\*){2}|\b(?:_){2}(.+?)(?:_){2}\b/g,
             action: function action(text, selection, pattern, lineStart) {
               var match = pattern.exec(text);
 
               var annotatedText = match[0];
-              var matchedText = match[1];
+              var matchedText = match[1] || match[2];
               var startIndex = lineStart + match.index;
 
               if (text.match(/^([*_ \n]+)$/g)) return;
@@ -15321,12 +15321,12 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             }
           }, {
             name: 'italic',
-            pattern: /\b(?:\*|_){1}(.+?)(?:\*|_){1}\b/g,
+            pattern: /(?:\*){1}(.+?)(?:\*){1}|\b(?:_){1}(.+?)(?:_){1}\b/g,
             action: function action(text, selection, pattern, lineStart) {
               var match = pattern.exec(text);
 
               var annotatedText = match[0];
-              var matchedText = match[1];
+              var matchedText = match[1] || match[2];
               var startIndex = lineStart + match.index;
 
               if (text.match(/^([*_ \n]+)$/g)) return;
@@ -15357,7 +15357,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
             }
           }, {
             name: 'code',
-            pattern: /\b(?:`)(.+?)(?:`)\b/g,
+            pattern: /(?:`)(.+?)(?:`)/g,
             action: function action(text, selection, pattern, lineStart) {
               var match = pattern.exec(text);
 
