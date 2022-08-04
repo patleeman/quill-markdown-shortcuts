@@ -116,6 +116,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 // THE SOFTWARE.
 //
 
+
 var _quill = __webpack_require__(0);
 
 var _quill2 = _interopRequireDefault(_quill);
@@ -278,7 +279,7 @@ var MarkdownShortcuts = function () {
         }, 0);
       }
     }, {
-      name: 'asterisk-ul',
+      name: 'plus-ul',
       // Quill 1.3.5 already treat * as another trigger for bullet lists
       pattern: /^\+\s$/g,
       action: function action(text, selection, pattern) {
